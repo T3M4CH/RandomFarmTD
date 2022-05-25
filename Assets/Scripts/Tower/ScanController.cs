@@ -1,21 +1,14 @@
 using UnityEngine;
 using System.Linq;
-[CreateAssetMenu(menuName = "ScanController")]
-public class ScanController : ScriptableObject
+using System.Collections.Generic;
+
+public static class ScanController<T> where T : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask;
-    public Enemy[] FindEnemy(Transform transform, float radius)
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius, layerMask);
-        if (colliders.Length == 0)
-        {
-            return null;
-        }
-        return colliders.Select(x => x.GetComponent<Enemy>()).ToArray();
-    }
-    public Enemy[] FindEnemy(Transform transform, float radius, int i)
-    {
-        Enemy[] enemies = FindEnemy(transform, radius);
-        return enemies?.Length < i ? enemies : enemies.Take(i).ToArray();
-    }
+    // ReSharper disable Unity.PerformanceAnalysis
+    public static IEnumerable<T> FindObjectsOfType(Vector3 position, float radius)
+        => Physics.OverlapSphere(position, radius)
+            .Select(x => x.GetComponent<T>())
+            .Where(x => x != null);
+    public static IEnumerable<T> FindObjectsOfType(Vector3 position, float radius, int count)
+        => FindObjectsOfType(position, radius).Take(count);
 }
