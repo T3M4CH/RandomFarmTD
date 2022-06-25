@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1aff0f0923bed74cbf186af77fd2df8, type: 3}
+  m_Name: MeepoBonus
+  m_EditorClassIdentifier: 
+  <Texture>k__BackingField: {fileID: 2800000, guid: 1b70a9423d412aa479b634630d15f518, type: 3}
+  <Type>k__BackingField: 999
+  <MaxStack>k__BackingField: 1
+  meepoBonus: {fileID: 11400000, guid: 24b5ab34c4d7aac4497b235505eb3be3, type: 2}

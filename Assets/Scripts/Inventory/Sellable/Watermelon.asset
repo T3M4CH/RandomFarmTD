@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5f0535e85472d41b7fa3aa758ea318, type: 3}
+  m_Name: Watermelon
+  m_EditorClassIdentifier: 
+  <Texture>k__BackingField: {fileID: 2800000, guid: 9664a0f4829b154419b9de95c018e25b, type: 3}
+  <Type>k__BackingField: 1
+  <MaxStack>k__BackingField: 5
+  rialto: {fileID: 11400000, guid: 4cb83070072ac2f41a80222f2f02047c, type: 2}

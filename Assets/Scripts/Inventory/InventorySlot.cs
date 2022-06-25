@@ -1,62 +1,90 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+namespace Inventory
 {
-    private Item item = null;
-    [SerializeField] private EmptySlot emptySlot;
-    [SerializeField] private RialtoChannelSO inventoryChannel;
-    [SerializeField] private Button button;
-    [SerializeField] private Image image;
-    [SerializeField] private TextMeshProUGUI text;
-    private Texture2D texture;
-    private int count = 0;
-    private void Start()
+    public class InventorySlot : MonoBehaviour
     {
-        item = emptySlot;
-        button.onClick.AddListener(() =>
+        private InventoryItem _item = null;
+        [SerializeField] private InventoryItem emptySlot;
+        [SerializeField] private RialtoChannelSO inventoryChannel;
+        [SerializeField] private Button button;
+        [SerializeField] private Image image;
+        [SerializeField] private TextMeshProUGUI text;
+        private Texture2D texture;
+        public int Count { get; private set; } = 0;
+
+        private int _deduction;
+
+        private void Start()
         {
-            if (item.Sellable())
-            {
-                SellItem();
-            }
-        });
-    }
-    private void UpdateText()
-    {
-        text.text = count <= 1 ? "" : count.ToString();
-    }
-    public void SetSlot(Item _item)
-    {
-        texture = _item.GetTexture();
-        count++;
-        UpdateText();
-        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f),100f);
-        image.color = Color.white;
-        item = _item;
-    }
-    public int ItemType()
-    {
-        if (item != null)
-        {
-            return item.Type();
+            _item = emptySlot;
+            button.onClick.AddListener(Use);
         }
-        return 0;
-    }
-    private void SellItem()
-    {
-        if (item != null)
+
+        private void UpdateText()
         {
-            inventoryChannel.Sell(Mathf.Clamp(count, 0, 5), item.Type());
-            count -= Mathf.Clamp(count, 0, 5);
-            UpdateText();
-            if(count == 0)
+            text.text = Count <= 1 ? "" : Count.ToString();
+            
+            if (Count <= 0)
             {
                 image.color = Color.clear;
                 image.sprite = null;
-                item = emptySlot;
+                _item = emptySlot;
             }
+        }
+
+        public void SetSlot(InventoryItem item)
+        {
+            texture = item.Texture;
+            Count++;
+            UpdateText();
+            image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f),
+                100f);
+            image.color = Color.white;
+            _item = item;
+        }
+
+        public void SetSlot(InventoryItem item, int count)
+        {
+            texture = item.Texture;
+            Count += count;
+            UpdateText();
+            image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f),
+                100f);
+            image.color = Color.white;
+            _item = item;
+        }
+
+        public int ItemType()
+        {
+            return _item.Type;
+        }
+
+        public void DecrementValue(int count)
+        {
+            Count -= count;
+            UpdateText();
+            if (Count < 0) throw new ArithmeticException("Count < 0");
+        }
+
+        private void Use()
+        {
+            if (_item.MaxStack > 0)
+            {
+                _deduction = Count >= _item.MaxStack
+                    ? Mathf.Clamp(Count, 0, _item.MaxStack) : 1;
+                Count -= _deduction;
+            }
+            else
+            {
+                _deduction = 0;
+            }
+            
+            _item.Use(_deduction);
+            UpdateText();
         }
     }
 }
